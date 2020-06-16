@@ -17,8 +17,7 @@ const styles = {
   }
 }
 
- function TodoItem({ todo, index, onChange }) {
-   //???
+ function TodoItem({ todo, onChange }) {
   const { removeTodo } = useContext(Context);
 
   const classes = [];

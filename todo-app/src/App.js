@@ -12,6 +12,8 @@ function App() {
     {id: 3, completed: false, title: 'watch film'},
   ])
 
+  let [filterBy, setFilterBy] = React.useState('')
+
   function toggleTodo(id) {
    setTodos(
      todos.map(todo => {
@@ -39,30 +41,32 @@ function App() {
    )
   }
 
-  function onBtnClick (event) { 
-    let btnClass = event.target.className;
-    let todosList = Array.from(todos);
-    
-   if (btnClass === 'all') {
-      // console.log(1, todos);
-      // console.log(2, todosList);
-      setTodos(todosList) //??? should set state to initial state with copy of todos
-    }
-
-   if (btnClass === 'active') {
-     let activeItems = todos.filter(todo => todo.completed === false)
-     setTodos(activeItems)
-    }
-
-  if (btnClass === 'completed') {
-     let doneItems = todos.filter(todo => todo.completed === true)
-     setTodos(doneItems)
-    }
-
-   if (btnClass === 'clear') {
-    setTodos(todos.filter(todo => todo.completed !== true))
+  // add filter(class) to this.state.filterBy
+  function setFilter (event) {
+    let btnFilter = event.target.className
+    return setFilterBy(btnFilter)
   }
-}
+
+  //filter todos by filter aka class, return NEW array (state WON'T BE changed)
+  function filterTodos () {
+    switch(filterBy) {
+      case 'active': {
+        return todos.filter(todo => !todo.completed)
+      }
+      case 'completed': {
+        return todos.filter(todo => todo.completed)
+      }
+      case 'all': return todos
+      case 'clear': return clearTodos()
+    }
+  }
+
+  //filter todos (state WILL BE changed)
+  function clearTodos () {
+    return setTodos(
+      todos.filter(todo => !todo.completed)
+    )
+  }
 
   return (
     <Context.Provider value={{ removeTodo }}>
@@ -70,11 +74,11 @@ function App() {
         <h1>Todo List</h1>
         <TodoInput onCreate={addTodo}/>
           {todos.length ? (
-          <TodoList todos={todos} onToggle={toggleTodo}/>
+          <TodoList todos={filterTodos()} onToggle={toggleTodo}/>
           ) : (
           <p>no todos!</p>
           )}
-          <TodoActions todos={todos} clickHandler={onBtnClick}/>
+          <TodoActions todos={todos} clickHandler={setFilter}/>
       </div>
     </Context.Provider>
   )
