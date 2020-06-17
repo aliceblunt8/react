@@ -43,6 +43,7 @@ function App() {
 
   // add filter(class) to this.state.filterBy
   function setFilter (event) {
+    // console.log(event.target.className)
     let btnFilter = event.target.className
     return setFilterBy(btnFilter)
   }
@@ -57,7 +58,7 @@ function App() {
         return todos.filter(todo => todo.completed)
       }
       case 'all': return todos
-      case 'clear': return clearTodos()
+      default: return clearTodos()
     }
   }
 
@@ -74,7 +75,7 @@ function App() {
         <h1>Todo List</h1>
         <TodoInput onCreate={addTodo}/>
           {todos.length ? (
-          <TodoList todos={filterTodos()} onToggle={toggleTodo}/>
+          <TodoList todos={() => filterTodos(todos)} onToggle={toggleTodo}/>
           ) : (
           <p>no todos!</p>
           )}
