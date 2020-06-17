@@ -12,7 +12,7 @@ function App() {
     {id: 3, completed: false, title: 'watch film'},
   ])
 
-  let [filterBy, setFilterBy] = React.useState('')
+  let [filterBy, setFilterBy] = React.useState('all')
 
   function toggleTodo(id) {
    setTodos(
@@ -42,10 +42,9 @@ function App() {
   }
 
   // add filter(class) to this.state.filterBy
-  function setFilter (event) {
+  function setFilter (filter) {
     // console.log(event.target.className)
-    let btnFilter = event.target.className
-    return setFilterBy(btnFilter)
+    return setFilterBy(filter)
   }
 
   //filter todos by filter aka class, return NEW array (state WON'T BE changed)
@@ -57,8 +56,7 @@ function App() {
       case 'completed': {
         return todos.filter(todo => todo.completed)
       }
-      case 'all': return todos
-      default: return clearTodos()
+      default: return todos
     }
   }
 
@@ -75,11 +73,11 @@ function App() {
         <h1>Todo List</h1>
         <TodoInput onCreate={addTodo}/>
           {todos.length ? (
-          <TodoList todos={() => filterTodos(todos)} onToggle={toggleTodo}/>
+          <TodoList todos={filterTodos(todos)} onToggle={toggleTodo}/>
           ) : (
           <p>no todos!</p>
           )}
-          <TodoActions todos={todos} clickHandler={setFilter}/>
+          <TodoActions todos={todos} setBtnFilter={setFilter} clearBtn={clearTodos}/>
       </div>
     </Context.Provider>
   )

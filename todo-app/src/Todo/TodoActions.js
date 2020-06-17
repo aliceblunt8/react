@@ -1,13 +1,13 @@
 import React from 'react';
 
-function TodoActions (props) {
+function TodoActions ({ setBtnFilter, clearBtn}) {
  
   return (
-    <div className="filter" onClick={event => props.clickHandler(event)}>
-      <button className="all">All</button>
-      <button className="active">Active</button>
-      <button className="completed">Completed</button>
-      <button className="clear">Clear</button>
+    <div className="filter">
+      <button onClick={() => setBtnFilter('all')} className="all">All</button>
+      <button onClick={() => setBtnFilter('active')} className="active">Active</button>
+      <button onClick={() => setBtnFilter('completed')} className="completed">Completed</button>
+      <button onClick={() => clearBtn()} className="clear">Clear</button>
     </div>
   )
 }
